@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Felices 300 días</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      /* Paleta: rojos + crema */
+      --red: #e63946;
+      --red-dark: #b5171e;
+      --wine: #7a1b1b;
+      --cream: #fff3e6;
+      --gold: #d4a017;
+      --ink: #1f1f1f;
+
+      --bg1: #fffaf6;
+      --bg2: #ffe9e9;
+      --shadow: rgba(181, 23, 30, .25);
+
+      /* === Tamaño más moderado en móvil === */
+      --gift-w: clamp(260px, 78vw, 360px); /* móvil */
+    }
+    @media (min-width: 600px){
+      :root{ --gift-w: clamp(320px, 54vw, 460px); } /* tablet */
+    }
+    @media (min-width: 1024px){
+      :root{ --gift-w: clamp(420px, 32vw, 520px); } /* desktop */
+    }
+
+    * { box-sizing: border-box }
+    html, body { height: 100% }
+    body{
+      margin: 0;
+      font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(1200px 800px at 50% 35%, var(--bg1) 0%, var(--bg2) 70%, #fbecec 100%);
+      overflow: hidden; /* evita scroll por los corazones */
+    }
+
+    /* ---- corazones ---- */
+    .hearts{ position:fixed; inset:0; pointer-events:none; overflow:hidden; }
+    .heart{
+      position:absolute; width:16px; height:16px;
+      transform:translate(-50%,-50%) rotate(45deg);
+      animation: floatUp linear infinite; opacity:.75;
+      background: var(--red);
+    }
+    .heart::before, .heart::after{
+      content:""; position:absolute; width:100%; height:100%;
+      background:inherit; border-radius:50%;
+    }
+    .heart::before{ left:-50% } .heart::after{ top:-50% }
+    .heart.alt{ background: var(--red-dark) }
+
+    @keyframes floatUp{
+      from{ transform:translate(var(--x, 0vw), 110vh) rotate(45deg); opacity:0 }
+      10%{ opacity:.85 }
+      to{ transform:translate(calc(var(--x, 0vw) + var(--drift, 10vw)), -20vh) rotate(45deg); opacity:0 }
+    }
+
+    /* ---- layout (centrado verdadero en móvil) ---- */
+    .wrap{
+      position:relative;
+      min-height: 100svh;             /* svh = viewport estable en móviles */
+      display:grid;
+      place-items:center;              /* centra en ambos ejes */
+      text-align:center;
+      padding: 20px;
+    }
+    .title{
+      display:grid; gap:.4rem; place-items:center; user-select:none;
+    }
+    .press{
+      display:inline-flex; align-items:center; gap:.6rem;
+      padding:.6rem 1rem;
+      border:2px dashed var(--red-dark);
+      border-radius:999px;
+      background:rgba(255,255,255,.75);
+      box-shadow: 0 10px 30px var(--shadow);
+      backdrop-filter: blur(6px);
+      font-weight:800; letter-spacing:.06em; text-transform:uppercase;
+      font-size: clamp(0.95rem, 2.6vw, 1.15rem);
+    }
+    .hint{
+      font-size: clamp(0.9rem, 2.2vw, 1.05rem);
+      opacity:.9;
+    }
+
+    /* ---- escena ---- */
+    .scene{
+      width: 100%;
+      display:grid; place-items:center;
+      /* da espacio vertical pero mantiene el centrado del grid */
+      min-height: calc(var(--gift-w) + 64px);
+    }
+
+    /* ---- Caja (estilo rojo elegante) ---- */
+    .gift{
+      position:relative;
+      width: var(--gift-w);
+      height: calc(var(--gift-w) * 0.82);
+      transform-style: preserve-3d;
+      transition: transform .8s cubic-bezier(.2,.8,.2,1);
+      cursor: pointer;
+      filter: drop-shadow(0 18px 34px var(--shadow));
+      outline: none;
+      margin: 0 auto;                 /* seguridad extra para centrar */
+    }
+    /* quito el “salto” al hover en desktop para no romper el centrado visual */
+    .gift:hover{ transform: none; }
+
+    /* base */
+    .box{
+      position:absolute; inset:auto 0 0 0; margin:auto;
+      width: var(--gift-w);
+      height: calc(var(--gift-w) * 0.6);
+      border-radius: calc(var(--gift-w) * 0.07);
+      background:
+        linear-gradient(145deg, #8e1f1f 0%, var(--wine) 45%, var(--red-dark) 100%),
+        radial-gradient(200px 90px at 50% 0%, rgba(255,255,255,.22), transparent 60%);
+      border: 3px solid rgba(255,255,255,.7);
+      overflow: hidden;
+    }
+
+    /* cinta diagonal */
+    .ribbon{
+      position:absolute; inset:0;
+      background:
+        linear-gradient(-45deg,
+          transparent 0 42%,
+          var(--cream) 42% 58%,
+          transparent 58% 100%);
+    }
+    .ribbon::before, .ribbon::after{
+      content:""; position:absolute;
+      background: var(--gold); opacity:.9;
+      width: 4px; height: 200%;
+      transform: rotate(-45deg);
+    }
+    .ribbon::before{ left: 40%; top:-50% }
+    .ribbon::after{ left: calc(40% + 26px); top:-50% }
+
+    /* tapa (levemente menos “alta” para no descentrar) */
+    .lid{
+      position:absolute; left:50%; top: calc(var(--gift-w) * -0.05);
+      transform: translateX(-50%);
+      width: calc(var(--gift-w) * 1.04);
+      height: calc(var(--gift-w) * 0.23);
+      border-radius: calc(var(--gift-w) * 0.06);
+      background:
+        linear-gradient(160deg, #ffeded 0%, #ffdcdc 40%, #ffbaba 100%);
+      border: 3px solid rgba(255,255,255,.9);
+      box-shadow: 0 8px 14px rgba(0,0,0,.12);
+      transform-origin: 50% 100%;
+      transition: transform .8s cubic-bezier(.2,.8,.2,1);
+    }
+    .lid::after{
+      content:"";
+      position:absolute; left:50%; top: 6px; transform: translateX(-50%);
+      width: calc(var(--gift-w) * 0.33);
+      height: calc(var(--gift-w) * 0.08);
+      border-radius: calc(var(--gift-w) * 0.06);
+      background: linear-gradient(90deg, var(--cream), #fff, var(--cream));
+      box-shadow: inset 0 0 0 2px rgba(212,160,23,.45);
+    }
+
+    /* tarjeta emergente (mensaje) */
+    .message{
+      position:absolute; inset:0; display:grid; place-items:center; pointer-events:none;
+    }
+    .card{
+      transform: translateY(20px) scale(.96);
+      opacity: 0;
+      transition: all .6s ease .25s;
+      background: rgba(255,255,255,.92);
+      border: 2px solid var(--red-dark);
+      border-radius: 18px;
+      padding: clamp(16px, 3vw, 26px) clamp(18px, 3.2vw, 30px);
+      box-shadow: 0 12px 28px var(--shadow);
+      max-width: min(90vw, 640px);
+    }
+
+    /* Tipografía */
+    h1{
+      margin:0;
+      font-weight: 800;
+      font-size: clamp(1.8rem, 4.2vw, 2.4rem);
+      line-height: 1.15;
+      color: var(--red-dark);
+      text-shadow: 0 1px 0 rgba(255,255,255,.9);
+    }
+    .card p{
+      margin:.55rem 0 0;
+      font-size: clamp(1.02rem, 2vw, 1.25rem);
+      font-weight: 600;
+      color: #6b2626;
+    }
+
+    /* Estado abierto */
+    .gift.open .lid{ transform: rotateX(160deg) translateY(-8px) }
+    .gift.open .card{ transform: translateY(-44px) rotate(-1.2deg) scale(1); opacity:1 }
+    .gift.open{ transform: none; }
+
+    /* Accesibilidad focus */
+    .gift:focus-visible{ box-shadow: 0 0 0 4px rgba(230,57,70,.35); border-radius: 20px }
+  </style>
+</head>
+<body>
+  <!-- Corazones -->
+  <div class="hearts" aria-hidden="true" id="hearts"></div>
+
+  <main class="wrap">
+    <div class="title">
+      <span class="press">presiona la caja</span>
+      <div class="hint">toca o pulsa la caja para obtener una sorpresa :)</div>
+    </div>
+
+    <section class="scene">
+      <div class="gift" id="gift" role="button" tabindex="0" aria-expanded="false" aria-label="Abrir regalo">
+        <div class="lid"></div>
+        <div class="box">
+          <div class="ribbon"></div>
+        </div>
+
+        <div class="message" aria-live="polite">
+          <div class="card">
+            <h1>¡Felices 300 días! ❤</h1>
+            <p>Con y para usted todos los días que me pida</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Abrir/cerrar caja
+    const gift = document.getElementById('gift');
+    const toggleGift = () => {
+      const isOpen = gift.classList.toggle('open');
+      gift.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    };
+    gift.addEventListener('click', toggleGift);
+    gift.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleGift(); }
+    });
+
+    // Corazones (menos cantidad para no “cargar” móviles)
+    const heartsContainer = document.getElementById('hearts');
+    const rand = (min, max) => Math.random() * (max - min) + min;
+    function spawnHearts(count = 18){
+      for(let i=0;i<count;i++){
+        const h = document.createElement('div');
+        h.className = 'heart' + (Math.random() > .6 ? ' alt' : '');
+        h.style.setProperty('--x', rand(0, 100) + 'vw');
+        h.style.setProperty('--drift', rand(-10, 10) + 'vw');
+        h.style.animationDuration = rand(9, 15) + 's';
+        h.style.animationDelay = rand(-12, 0) + 's';
+        heartsContainer.appendChild(h);
+      }
+    }
+    spawnHearts(18);
+  </script>
+</body>
+</html>
